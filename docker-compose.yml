@@ -1,0 +1,13 @@
+version '2'
+services: 
+    web: 
+        container_name: ng-web
+        build:
+             context: ./
+             dockerfile: deploy/web.docker
+        volumes:
+             - ./dist:/var/www
+        ports:
+             - "8000:80"     
+                
+      

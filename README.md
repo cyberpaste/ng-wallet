@@ -1,1 +1,1 @@
-# ng-wallet
+# Wallet

@@ -1,0 +1,40 @@
+mat-form-field{
+    width: 100%;
+}
+
+.login-button{
+    margin-right: 7px !important;
+}
+
+.login-title{
+    border-bottom: 5px solid #3f51b5;
+}
+
+.form-signin{
+    width: 100%;
+    max-width: 330px;
+    margin: 0 auto;
+    border: 1px gray;
+    box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14);
+    border-radius: 5px;
+    background: white;
+    margin-top:30px;
+}
+
+.success-block{
+    color: #285b2a !important;
+    background-color: #dbefdc !important;
+    border-color: #cde9ce !important;
+    padding: .75rem 1.25rem;
+}
+
+.fail-block{
+    color: #7f231c !important;
+    background-color: #fdd9d7 !important;
+    border-color: #fccac7 !important;
+    padding: .75rem 1.25rem;
+}
+
+.login-loading{
+    margin-left: 7px !important;
+}
