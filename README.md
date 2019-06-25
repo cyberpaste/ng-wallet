@@ -1,7 +1,7 @@
 # Wallet
 
 Personal wallet app. It will help managing funds.
-
+![preview](https://raw.githubusercontent.com/cyberpaste/ng-wallet/master/preview.jpg)
 Features :
 1) Authentification
 2) Balance debit/credit operations
