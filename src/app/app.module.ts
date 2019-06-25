@@ -14,6 +14,7 @@ import {
     MatToolbarModule,
     MatTableModule,
     MatDialogModule,
+    MatSelectModule,
 } from '@angular/material';
 require ("@/style.css");
 // used to create fake backend
@@ -25,7 +26,7 @@ import { routing } from './app.routing';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
-
+import { DialogComponent } from './dialog';
 
 @NgModule({
     imports: [
@@ -44,11 +45,13 @@ import { LoginComponent } from './login';
         MatToolbarModule,
         MatTableModule,
         MatDialogModule,
+        MatSelectModule,
     ],
     declarations: [
         AppComponent,
         HomeComponent,
-        LoginComponent
+        LoginComponent,
+        DialogComponent
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
@@ -57,7 +60,8 @@ import { LoginComponent } from './login';
         // provider used to create fake backend
         fakeBackendProvider
     ],
-    bootstrap: [AppComponent]
+    bootstrap: [AppComponent],
+    entryComponents: [DialogComponent]
 })
 
 export class AppModule { }

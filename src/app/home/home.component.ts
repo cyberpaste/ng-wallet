@@ -4,7 +4,7 @@ import { first } from 'rxjs/operators';
 import { User, Balance } from '@/_models';
 import { UserService, AuthenticationService, BalanceService } from '@/_services';
 import { MatDialog } from '@angular/material/dialog';
-import { BalanceDialog } from '@/dialog/dialog.component';
+import { DialogComponent } from '@/dialog';
 require('@/home/home.component.css');
 
 @Component({ templateUrl: 'home.component.html' })
@@ -21,36 +21,54 @@ export class HomeComponent {
     ) { }
 
     openDialog(): void {
-        console.log (this.dialog);
-
-        const dialogRef = this.dialog.open(BalanceDialog, {
-            width: '250px',
-            data: { name: '5', animal: 'd' }
+        const dialogRef = this.dialog.open(DialogComponent, {
+            width: '350px',
         });
-
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
+
         });
+        dialogRef.componentInstance.onAdd.subscribe(() => {
+            this.loading = true;
+            this.onLoad();
+        });
+    }
+
+    convertTime(time) {
+        return new Date(time * 1000).toUTCString();
+    }
+
+    clearBalance() {
+        this.loading = true;
+        this.balanceService.deleteAll().pipe(first()).subscribe(balance => {
+            this.balance = balance.reverse();
+            this.total = this.getBalance();
+            this.loading = false;
+        });
+        this.onLoad();
     }
 
     getBalance() {
         var total: number = 0;
         this.balance.forEach(function (item) {
             if (item.type == 'debit') {
-                total += parseFloat(item.amount);
-            }
-            if (item.type == 'credit') {
                 total -= parseFloat(item.amount);
             }
+            if (item.type == 'credit') {
+                total += parseFloat(item.amount);
+            }
         })
-        return total;
+        return total > 0 ? parseFloat(total.toFixed(2)) : 0 ;
     }
 
-    ngOnInit() {
+    onLoad() {
         this.balanceService.getAll().pipe(first()).subscribe(balance => {
-            this.balance = balance;
+            this.balance = balance.reverse();
             this.total = this.getBalance();
             this.loading = false;
         });
+    }
+
+    ngOnInit() {
+        this.onLoad();
     }
 }

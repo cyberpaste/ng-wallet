@@ -10,4 +10,12 @@ export class BalanceService {
     getAll() {
         return this.http.get<Balance[]>(`${config.apiUrl}/balance`);
     }
+
+    addOperation(balance) {
+        return this.http.post<Balance>(`${config.apiUrl}/balance`, balance)
+    }
+
+    deleteAll() {
+        return this.http.get<Balance[]>(`${config.apiUrl}/balance/clear`);
+    }
 }

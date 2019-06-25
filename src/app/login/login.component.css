@@ -19,6 +19,7 @@ mat-form-field{
     border-radius: 5px;
     background: white;
     margin-top:30px;
+    display:table-cell !important;
 }
 
 .success-block{

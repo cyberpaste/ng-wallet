@@ -1,11 +1,47 @@
-<h1 mat-dialog-title>Hi</h1>
+<h1 mat-dialog-title>Add operation
+    <mat-icon class="close-dialog" (click)="onNoClick()">close</mat-icon>
+</h1>
 <div mat-dialog-content>
-    <p>What's your favorite animal?</p>
-    <mat-form-field>
-        
-    </mat-form-field>
-</div>
-<div mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button [mat-dialog-close]="data.animal" cdkFocusInitial>Ok</button>
+    <form [formGroup]="balanceForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field>
+            <mat-label>Select type</mat-label>
+            <mat-select formControlName="type" [ngClass]="{'is-invalid':submitted && f.type.errors }">
+                <mat-option *ngFor="let type of types" [value]="type.value">
+                    {{type.viewValue}}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f.type.errors">
+                <span *ngIf="f.type.errors.required">Type is required</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Enter amount" type="number" formControlName="amount"
+                [ngClass]="{'is-invalid':submitted && f.amount.errors }">
+            <mat-error *ngIf="submitted && f.amount.errors">
+                <span *ngIf="f.amount.errors.required">Amount is required</span>
+                <span *ngIf="f.amount.errors.min||f.amount.errors.max">Amount should be numberic</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <br>
+        <mat-card-actions align="end">
+            <button mat-raised-button color="primary" [disabled]="loading" class="button login-button">
+                Add operation
+            </button>
+        </mat-card-actions>
+
+        <mat-card-actions *ngIf="loading" align="start" class="login-loading">
+            <br>
+            <br>
+            <mat-spinner [diameter]="25" [style.display]="block"></mat-spinner>
+        </mat-card-actions>
+        <div *ngIf="loading == false && error">
+            <br>
+            <div class="fail-block">
+                <mat-error>{{error}}</mat-error>
+            </div>
+        </div>
+    </form>
 </div>

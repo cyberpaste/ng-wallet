@@ -33,12 +33,49 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             if (request.url.endsWith('/balance') && request.method === 'GET') {
                 if (!isLoggedIn) return unauthorised();
+                let data = localStorage.getItem('balance') || '[]';
+                var balances = JSON.parse(data);
+                return ok(JSON.parse(data));
+            }
+
+
+            if (request.url.endsWith('/balance/clear') && request.method === 'GET') {
+                if (!isLoggedIn) return unauthorised();
+                return ok(localStorage.setItem('balance', ''));
+            }
+
+            if (request.url.endsWith('/balance') && request.method === 'POST') {
+                if (!isLoggedIn) return unauthorised();
+
+                var balances = JSON.parse(localStorage.getItem('balance') || '[]');
+                var max = balances.length;
+                max++;
+                var total: number = 0;
+                balances.forEach(function (item) {
+                    if (item.type == 'debit') {
+                        total -= parseFloat(item.amount);
+                    }
+                    if (item.type == 'credit') {
+                        total += parseFloat(item.amount);
+                    }
+                })
+
+                if(request.body.type == 'debit' && total < request.body.amount){
+                    return error('Operation error. Balance will be below zero.');
+                }
+
+                balances.push({
+                    id: max,
+                    type: request.body.type,
+                    amount: request.body.amount,
+                    added: request.body.added
+                });
+
+                localStorage.setItem('balance', JSON.stringify(balances));
                 return ok([
                     {
-                        id: 1,
-                        type: "debit",
-                        amount: 100,
-                        added: 1561316849
+                        success: true,
+                        id: max,
                     }
                 ]);
             }

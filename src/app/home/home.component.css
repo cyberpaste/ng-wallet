@@ -1,3 +1,13 @@
 .balance-loader{
     display:inline-block !important;
 }
+
+table{
+    width: 100%;
+}
+
+tr td:last-child{
+    width:1%;
+    white-space:nowrap;
+}
+

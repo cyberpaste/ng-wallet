@@ -6,18 +6,36 @@
     <title>Wallet</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <!-- bootstrap css -->
+    <!-- favicon pack -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon/favicon-16x16.png">
+    <link rel="manifest" href="/assets/favicon/webmanifest.json">
+    <link rel="mask-icon" href="/assets/favicon/safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
     <style>
         a {
             cursor: pointer
         }
 
+        body,
+        html {
+            height: 100%;
+            display: grid;
+        }
+
         .lds-ring {
-            display: inline-block;
-            position: relative;
             width: 200px;
             height: 200px;
-            padding: 30vh 40vw;
+            margin: auto;
+            margin-top: 15vh;
+        }
+
+        @media(max-width:768px) {
+            .lds-ring {
+                padding: 10vh 10vw;
+            }
         }
 
         .lds-ring div {
