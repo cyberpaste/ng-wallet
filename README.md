@@ -12,12 +12,11 @@ You need node.js, npm, docker & docker-compose to be installed.
 
 1) ``` npm install ```
 2) ``` ng build ```
-3) ``` cd deploy && php entitygen.php ```
-4) ``` cd backend && composer update ```
-5) ``` docker-compose up -d ```
-6) Create db via adminer and import deploy/db.sql
-7) Edit db connection params at backend/app/settings.php
-8) ``` sh build.sh ```
+3) ``` cd backend && composer update ```
+4) ``` docker-compose up -d ```
+5) Create db via adminer and import deploy/db.sql
+6) Edit db connection params at backend/app/settings.php
+7) ``` sh build.sh ```
 
 This will make app available at port localhost:8000
 
