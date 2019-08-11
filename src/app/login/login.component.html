@@ -1,42 +1,42 @@
 ﻿<mat-card class="form-signin">
-        <mat-card-header class="login-title">
-            <mat-card-title>Login</mat-card-title>
-        </mat-card-header>
-        <div class="success-block">
-            Username: admin<br>
-            Password: admin
-        </div>
-        <br>
-        <mat-card-content>
-            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-                <mat-form-field>
-                    <input matInput placeholder="Enter your username" type="text" formControlName="username"
-                        [ngClass]="{'is-invalid':submitted && f.username.errors }">
-                    <mat-error *ngIf="submitted && f.username.errors">
-                        <span *ngIf="f.username.errors.required">Username is required</span>
-                    </mat-error>
-                </mat-form-field>
-                <mat-form-field>
-                    <input matInput placeholder="Enter your username" type="password" formControlName="password"
-                        [ngClass]="{'is-invalid':submitted && f.password.errors }">
-                    <mat-error *ngIf="submitted && f.password.errors">
-                        <span *ngIf="f.password.errors.required">Password is required</span>
-                    </mat-error>
-                </mat-form-field>
-                <mat-card-actions align="end">
-                    <button mat-raised-button color="primary" [disabled]="loading" class="button login-button">
-                        Login
-                    </button>
-                </mat-card-actions>
-    
-                <mat-card-actions *ngIf="loading" align="start" class="login-loading">
-                    <mat-spinner [diameter]="25" [style.display]="block"></mat-spinner>
-                </mat-card-actions>
-                <div *ngIf="loading == false">
-                    <div class="fail-block" *ngIf="error">
-                        <mat-error>{{error}}</mat-error>
-                    </div>
+    <mat-card-header class="login-title">
+        <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <div class="success-block">
+        Username: admin<br>
+        Password: admin
+    </div>
+    <br>
+    <mat-card-content>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <mat-form-field>
+                <input matInput placeholder="Enter your username" type="text" formControlName="username"
+                    [ngClass]="{'is-invalid':submitted && f.username.errors }">
+                <mat-error *ngIf="submitted && f.username.errors">
+                    <span *ngIf="f.username.errors.required">Username is required</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Enter your username" type="password" formControlName="password"
+                    [ngClass]="{'is-invalid':submitted && f.password.errors }">
+                <mat-error *ngIf="submitted && f.password.errors">
+                    <span *ngIf="f.password.errors.required">Password is required</span>
+                </mat-error>
+            </mat-form-field>
+            <mat-card-actions align="end">
+                <button mat-raised-button color="primary" [disabled]="loading" class="button login-button">
+                    Login
+                </button>
+            </mat-card-actions>
+
+            <mat-card-actions *ngIf="loading" align="start" class="login-loading">
+                <mat-spinner [diameter]="25" [style.display]="block"></mat-spinner>
+            </mat-card-actions>
+            <div *ngIf="loading == false">
+                <div class="fail-block" *ngIf="error">
+                    <mat-error>{{error}}</mat-error>
                 </div>
-            </form>
-        </mat-card-content>
-    </mat-card>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

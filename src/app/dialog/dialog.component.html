@@ -1,4 +1,11 @@
-<h1 mat-dialog-title>Add operation
+<h1 mat-dialog-title>
+    <ng-container *ngIf="event == 'edit'; else elseTemplate">
+            Edit operation
+    </ng-container>
+    <ng-template #elseTemplate>
+            Add operation
+    </ng-template>
+    
     <mat-icon class="close-dialog" (click)="onNoClick()">close</mat-icon>
 </h1>
 <div mat-dialog-content>
@@ -28,7 +35,7 @@
         <br>
         <mat-card-actions align="end">
             <button mat-raised-button color="primary" [disabled]="loading" class="button login-button">
-                Add operation
+                Submit
             </button>
         </mat-card-actions>
 

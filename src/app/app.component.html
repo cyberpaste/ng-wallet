@@ -1,6 +1,6 @@
-﻿<mat-toolbar color="primary" *ngIf="currentUser">
+<mat-toolbar color="primary" *ngIf="currentUser">
     <span class="fill-remaining-space">
-        <button mat-icon-button [matMenuTriggerFor]="menu">
+        <button class="menu" mat-icon-button [matMenuTriggerFor]="menu">
             <mat-icon>menu</mat-icon>
         </button>
         <mat-menu #menu="matMenu" [overlapTrigger]="false">
@@ -10,7 +10,7 @@
                     Home
                 </button>
             </a>
-            <a class="menu-link" (click)="logout()">
+            <a class="menu-link logout" (click)="logout()">
                 <button mat-menu-item>
                     <mat-icon>exit_to_app</mat-icon>
                     Logout

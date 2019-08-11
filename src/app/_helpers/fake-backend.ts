@@ -3,7 +3,7 @@ import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTT
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
 
-import { User, Balance } from '@/_models';
+import { User, Balance } from '../_models';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -38,29 +38,102 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return ok(JSON.parse(data));
             }
 
+            if (request.url.endsWith('/users/logout') && request.method === 'GET') {
+                return ok('ok');
+            }
 
             if (request.url.endsWith('/balance/clear') && request.method === 'GET') {
                 if (!isLoggedIn) return unauthorised();
                 return ok(localStorage.setItem('balance', ''));
             }
 
-            if (request.url.endsWith('/balance') && request.method === 'POST') {
+            if (request.url.match(/\/balance\/\d+$/) && request.method === 'PUT') {
+                if (!isLoggedIn) return unauthorised();
+                let urlParts = request.url.split('/');
+                let id = parseInt(urlParts[urlParts.length - 1]);
+                var balances = JSON.parse(localStorage.getItem('balance') || '[]');
+                var total = getBalanceTotal(balances);
+                balances.filter(
+                    function (item) {
+                        if (item.id === id) {
+                            if (item.type == 'credit') {
+                                total -= parseFloat(item.amount);
+                            } else {
+                                total += parseFloat(item.amount);
+                            }
+                            return false
+                        }
+                        return true;
+                    });
+
+                if (request.body.type == 'credit') {
+                    total += parseFloat(request.body.amount);
+                } else {
+                    total -= parseFloat(request.body.amount);
+                }
+
+                if (total < 0) {
+                    return error('Operation error. Balance will be below zero.');
+                }
+
+
+                balances = balances.filter(
+                    function (item) {
+                        if (item.id === id) {
+                            item.amount = request.body.amount;
+                            item.type = request.body.type;
+                        }
+                        return item;
+                    });
+
+                localStorage.setItem('balance', JSON.stringify(balances));
+                return ok([
+                    {
+                        success: true,
+                    }
+                ]);
+
+
+            }
+
+            if (request.url.match(/\/balance\/\d+$/) && request.method === 'DELETE') {
+                if (!isLoggedIn) return unauthorised();
+                let urlParts = request.url.split('/');
+                let id = parseInt(urlParts[urlParts.length - 1]);
+                var balances = JSON.parse(localStorage.getItem('balance') || '[]');
+                var total = getBalanceTotal(balances);
+                balances = balances.filter(
+                    function (item) {
+                        if (item.id === id) {
+                            if (item.type == 'credit') {
+                                total -= parseFloat(item.amount);
+                            }
+                            return false
+                        }
+                        return true;
+                    });
+
+                if (total < 0) {
+                    return error('Operation error. Balance will be below zero.');
+                }
+
+                localStorage.setItem('balance', JSON.stringify(balances));
+                return ok([
+                    {
+                        success: true,
+                    }
+                ]);
+            }
+
+            if (request.url.endsWith('/balance') && request.method === 'PUT') {
                 if (!isLoggedIn) return unauthorised();
 
                 var balances = JSON.parse(localStorage.getItem('balance') || '[]');
                 var max = balances.length;
                 max++;
-                var total: number = 0;
-                balances.forEach(function (item) {
-                    if (item.type == 'debit') {
-                        total -= parseFloat(item.amount);
-                    }
-                    if (item.type == 'credit') {
-                        total += parseFloat(item.amount);
-                    }
-                })
+                var total = getBalanceTotal(balances);
 
-                if(request.body.type == 'debit' && total < request.body.amount){
+                if (request.body.type == 'debit' && total < request.body.amount) {
                     return error('Operation error. Balance will be below zero.');
                 }
 
@@ -68,7 +141,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     id: max,
                     type: request.body.type,
                     amount: request.body.amount,
-                    added: request.body.added
+                    added: Math.round(new Date().getTime() / 1000)
                 });
 
                 localStorage.setItem('balance', JSON.stringify(balances));
@@ -85,10 +158,24 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }))
             // call materialize and dematerialize to ensure delay even if an error is thrown (https://github.com/Reactive-Extensions/RxJS/issues/648)
             .pipe(materialize())
-            .pipe(delay(500))
+            .pipe(delay(250))
             .pipe(dematerialize());
 
         // private helper functions
+
+
+        function getBalanceTotal(balances) {
+            var total: number = 0;
+            balances.forEach(function (item) {
+                if (item.type == 'debit') {
+                    total -= parseFloat(item.amount);
+                }
+                if (item.type == 'credit') {
+                    total += parseFloat(item.amount);
+                }
+            });
+            return total;
+        }
 
         function ok(body) {
             return of(new HttpResponse({ status: 200, body }));

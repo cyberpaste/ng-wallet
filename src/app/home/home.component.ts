@@ -1,35 +1,37 @@
 ﻿import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
+import { MatSnackBar } from '@angular/material';
 
-import { User, Balance } from '@/_models';
-import { UserService, AuthenticationService, BalanceService } from '@/_services';
+import { Balance } from '../_models';
+import { BalanceService } from '../_services';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from '@/dialog';
-require('@/home/home.component.css');
+import { DialogComponent } from '../dialog';
+import { SnackbarComponent } from '../snackbar';
 
-@Component({ templateUrl: 'home.component.html' })
+@Component({ templateUrl: 'home.component.html', styleUrls: ['home.component.css'] })
 export class HomeComponent {
     balance: Balance[] = [];
-    displayedColumns: string[] = ['id', 'type', 'amount', 'added'];
+    displayedColumns: string[] = ['id', 'type', 'amount', 'added', 'operation'];
     total = 0;
     loading = true;
 
     constructor(
-        private userService: UserService,
         private balanceService: BalanceService,
         public dialog: MatDialog,
+        public snackBar: MatSnackBar
     ) { }
 
     openDialog(): void {
         const dialogRef = this.dialog.open(DialogComponent, {
             width: '350px',
         });
-        dialogRef.afterClosed().subscribe(result => {
-
-        });
         dialogRef.componentInstance.onAdd.subscribe(() => {
             this.loading = true;
             this.onLoad();
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+
         });
     }
 
@@ -50,14 +52,13 @@ export class HomeComponent {
     getBalance() {
         var total: number = 0;
         this.balance.forEach(function (item) {
-            if (item.type == 'debit') {
-                total -= parseFloat(item.amount);
-            }
-            if (item.type == 'credit') {
-                total += parseFloat(item.amount);
+            let amount = parseFloat(item.amount);
+            switch (item.type) {
+                case 'debit': total -= amount; break;
+                case 'credit': total += amount; break;
             }
         })
-        return total > 0 ? parseFloat(total.toFixed(2)) : 0 ;
+        return total > 0 ? parseFloat(total.toFixed(2)) : 0;
     }
 
     onLoad() {
@@ -68,7 +69,46 @@ export class HomeComponent {
         });
     }
 
+    editOperation(balance: Balance) {
+        const dialogRef = this.dialog.open(DialogComponent, {
+            width: '350px',
+            data: balance,
+        });
+        dialogRef.afterClosed().subscribe(result => {
+
+        });
+        dialogRef.componentInstance.onAdd.subscribe(() => {
+            this.loading = true;
+            this.onLoad();
+        });
+    }
+
+    deleteOperation(balance: Balance) {
+        this.loading = true;
+        this.balanceService.deleteOperation(balance).pipe(first()).subscribe(balance => {
+            this.loading = false;
+            this.onLoad();
+        }, error => {
+            this.loading = false;
+            this.openSnackBar(error, ['snakbar', 'danger-snackbar']);
+        });
+
+    }
+
+    openSnackBar(message: string, panelClass: any) {
+        this.snackBar.openFromComponent(SnackbarComponent, {
+            data: message,
+            panelClass: panelClass,
+            duration: 2000,
+            horizontalPosition: 'right',
+        });
+    }
+
     ngOnInit() {
         this.onLoad();
+    }
+
+    ngOnDestroy() {
+
     }
 }

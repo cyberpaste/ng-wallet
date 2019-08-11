@@ -1,13 +1,39 @@
 version: '2'
-services: 
-    web: 
-        container_name: ng-web
+services:
+    web:
+        container_name: admin_web
         build:
-             context: ./
-             dockerfile: deploy/web.docker
+            context: ./
+            dockerfile: deploy/web.docker
         volumes:
-             - ./dist:/var/www
+            - ./:/var/www
         ports:
-             - "5000:80"     
-                
-      
+            - "127.0.0.1:8000:80"
+        links:
+            - app
+    app:
+        container_name: admin_app
+        build:
+            context: ./
+            dockerfile: deploy/app.docker
+        volumes:
+            - ./:/var/www
+        links:
+            - database
+        environment:
+            - "DB_PORT=3306"
+            - "DB_HOST=database"
+    database:
+        container_name: admin_db
+        image: mysql:5.7
+        ports:
+            - "127.0.0.1:3306:3306"
+        environment:
+            - "MYSQL_USERNAME=root"
+            - "MYSQL_USER=root"
+            - "MYSQL_ROOT_PASSWORD=secret"
+    adminer:
+        container_name: admin_adminer
+        image: adminer
+        ports:
+            - "127.0.0.1:8080:8080"

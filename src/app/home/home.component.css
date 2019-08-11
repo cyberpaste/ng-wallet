@@ -11,3 +11,19 @@ tr td:last-child{
     white-space:nowrap;
 }
 
+.operation-button{
+    border-radius: 0;
+    width: 25px;
+}
+
+.balance-icon{
+    font-size: 20px;
+}
+
+.delete-icon{
+    color: red;
+}
+
+.edit-icon{
+    color: orange;
+}

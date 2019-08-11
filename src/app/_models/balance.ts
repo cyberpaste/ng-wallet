@@ -1,6 +1,6 @@
 export class Balance {
     id?: number;
-    type: string;
+    type: "debit" | "credit";
     amount: string;
-    added: string;
+    added?: string;
 }

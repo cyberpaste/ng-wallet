@@ -6,23 +6,37 @@ Features :
 1) Authentification
 2) Balance debit/credit operations
 
-# Installation
+## Installation
 
 You need node.js, npm, docker & docker-compose to be installed.
 
 1) ``` npm install ```
-2) ``` npm run-script build ```
-3) ``` docker-compose up -d ```
+2) ``` ng build ```
+3) ``` cd deploy && php entitygen.php ```
+4) ``` cd backend && composer update ```
+5) ``` docker-compose up -d ```
+6) Create db via adminer and import deploy/db.sql
+7) Edit db connection params at backend/app/settings.php
+8) ``` sh build.sh ```
 
-This will make app available at port 5000
+This will make app available at port localhost:8000
 
-# Development
+## Development server
 
-1) ``` npm install ```
-2) ``` npm start ```
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-This will make app available at port 3000 and every time you update sources it will be reloaded without complete rebuild.
+## Code scaffolding
 
-# Testing
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-TBD
+## Build
+
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+
+## Running unit tests
+
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+
+## Running end-to-end tests
+
+Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
