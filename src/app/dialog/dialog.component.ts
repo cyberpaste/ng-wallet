@@ -6,7 +6,7 @@ import { first } from 'rxjs/operators';
 
 
 export interface DialogData {
-    id?: number,
+    id?: number;
     type: string;
     amount: number;
 }
@@ -22,7 +22,7 @@ export class DialogComponent {
     error = '';
     event = 'add';
 
-    @Output() onAdd = new EventEmitter()
+    @Output() onAdd = new EventEmitter();
 
     types = [
         { value: 'debit', viewValue: 'Debit' },
@@ -41,8 +41,8 @@ export class DialogComponent {
     }
 
     ngOnInit() {
-        var type = null;
-        var amount : number  = null;
+        let type = null;
+        let amount: number  = null;
         if (this.data) {
             type = this.data.type;
             amount = this.data.amount;
@@ -65,7 +65,7 @@ export class DialogComponent {
             return;
         }
         this.loading = true;
-        var balance = {
+        const balance = {
             id: null,
             type: this.f.type.value,
             amount: this.f.amount.value,

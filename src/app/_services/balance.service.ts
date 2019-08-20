@@ -24,7 +24,7 @@ export class BalanceService {
         return this.http.delete<Balance[]>(`${environment.apiUrl}/balance/` + balance.id);
     }
 
-    editOperation(balance){
-        return this.http.put<Balance[]>(`${environment.apiUrl}/balance/`+ balance.id, balance);
+    editOperation(balance) {
+        return this.http.put<Balance[]>(`${environment.apiUrl}/balance/` + balance.id, balance);
     }
 }

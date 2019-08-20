@@ -21,7 +21,7 @@ export class AppPage {
     return element(by.css(selector));
   }
 
-  logout(){
+  logout() {
     browser.executeScript(`document.querySelector('a.logout').click();`);
   }
 

@@ -1,0 +1,60 @@
+﻿<h1>Current Balance:
+    <mat-spinner *ngIf="loading" [diameter]="25" [style.display]="block" class="balance-loader"></mat-spinner>
+    <span *ngIf="!loading">{{total}}$</span>
+</h1>
+<button mat-raised-button color="primary" [disabled]="loading" class="button login-button" (click)="openDialog()">
+    {{'button.add' | translation}}
+</button>
+<br>
+<br>
+<table mat-table matSort [dataSource]="datatable" class="mat-elevation-z8" *ngIf="tableHasElements()"
+    (matSortChange)="sortData($event)" matSortActive="id" matSortDirection="asc" matSortDisableClear>
+    <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> # </th>
+        <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef> Amount </th>
+        <td mat-cell *matCellDef="let element">
+            <span [ngStyle]="{color: element.type == 'debit' ? 'red' : 'green'}">{{element.amount}}</span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="added">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Added </th>
+        <td mat-cell *matCellDef="let element"> {{element.added | unixdateconverter }} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="operation">
+
+        <th mat-header-cell *matHeaderCellDef> Operation </th>
+        <td mat-cell *matCellDef="let element">
+            <button mat-icon-button class="operation-button">
+                <mat-icon class="balance-icon edit-icon" (click)="editOperation(element)">edit</mat-icon>
+            </button>
+            <button mat-icon-button class="operation-button">
+                <mat-icon class="balance-icon delete-icon" (click)="deleteOperation(element)">delete_forever</mat-icon>
+            </button>
+        </td>
+
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+<ng-container *ngIf="tableHasElements()">
+    <div class="mat-elevation-z8">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+</ng-container>
+<br>
+<button *ngIf="tableHasElements()" mat-raised-button color="warn" [disabled]="loading"
+    class="button login-button" (click)="clearBalance()">
+    {{'delete-all.balance' | translation}}
+</button>

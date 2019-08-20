@@ -44,3 +44,16 @@ td{
 .mat-form-field {
     width: 100%;
 }
+
+.delete-icon{
+    color: red;
+}
+
+.edit-icon{
+    color: orange;
+}
+
+.close-dialog{
+    float:right;
+    cursor:pointer;
+}

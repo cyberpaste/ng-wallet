@@ -2,7 +2,7 @@
     <mat-card-header class="login-title">
         <mat-card-title>Login</mat-card-title>
     </mat-card-header>
-    <div class="success-block">
+    <div class="success-block" *ngIf="devmode == true">
         Username: admin<br>
         Password: admin
     </div>

@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material';
 
@@ -50,14 +50,14 @@ export class HomeComponent {
     }
 
     getBalance() {
-        var total: number = 0;
-        this.balance.forEach(function (item) {
-            let amount = parseFloat(item.amount);
+        let total = 0;
+        this.balance.forEach(function(item) {
+            const amount = parseFloat(item.amount);
             switch (item.type) {
                 case 'debit': total -= amount; break;
                 case 'credit': total += amount; break;
             }
-        })
+        });
         return total > 0 ? parseFloat(total.toFixed(2)) : 0;
     }
 
@@ -98,7 +98,7 @@ export class HomeComponent {
     openSnackBar(message: string, panelClass: any) {
         this.snackBar.openFromComponent(SnackbarComponent, {
             data: message,
-            panelClass: panelClass,
+            panelClass,
             duration: 2000,
             horizontalPosition: 'right',
         });

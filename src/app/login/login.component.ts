@@ -1,9 +1,11 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { AuthenticationService } from '../_services';
+import { environment } from '../../environments/environment';
 
 @Component({ templateUrl: 'login.component.html', styleUrls: ['login.component.css'] })
 export class LoginComponent implements OnInit {
@@ -12,6 +14,8 @@ export class LoginComponent implements OnInit {
     submitted = false;
     returnUrl: string;
     error = '';
+    devmode = environment.production ? false : true;
+    private subscription: Subscription = new Subscription;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -31,7 +35,7 @@ export class LoginComponent implements OnInit {
         }
 
         // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/';
     }
 
     // convenience getter for easy access to form fields
@@ -46,7 +50,7 @@ export class LoginComponent implements OnInit {
         }
 
         this.loading = true;
-        this.authenticationService.login(this.f.username.value, this.f.password.value)
+        this.subscription.add(this.authenticationService.login(this.f.username.value, this.f.password.value)
             .pipe(first())
             .subscribe(
                 data => {
@@ -55,6 +59,10 @@ export class LoginComponent implements OnInit {
                 error => {
                     this.error = error;
                     this.loading = false;
-                });
+                }));
+    }
+
+    ngOnDestroy() {
+        this.subscription.unsubscribe();
     }
 }

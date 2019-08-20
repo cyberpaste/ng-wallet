@@ -17,6 +17,8 @@ import {
   MatDialogModule,
   MatSelectModule,
   MatSnackBarModule,
+  MatPaginatorModule,
+  MatSortModule,
 } from '@angular/material';
 
 import { fakeBackendProvider } from './_helpers';
@@ -27,17 +29,25 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-import { HomeComponent } from './home/home.component';
-import { DialogComponent } from './dialog/dialog.component';
+import { BalanceComponent } from './balance/balance.component';
+import { BalanceDialogComponent } from './balance/dialog/balance.dialog.component';
 import { SnackbarComponent } from './snackbar/snackbar.component';
+
+import { UserComponent } from './user/user.component';
+import { UserDialogComponent } from './user/dialog/user.dialog.component';
+
+import { PipesModule } from './_pipes/pipes.module';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent,
-    DialogComponent,
-    SnackbarComponent
+    BalanceComponent,
+    BalanceDialogComponent,
+    SnackbarComponent,
+    UserComponent,
+    UserDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,17 +66,23 @@ import { SnackbarComponent } from './snackbar/snackbar.component';
     MatTableModule,
     MatDialogModule,
     MatSelectModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatPaginatorModule,
+    MatSortModule,
+    PipesModule,
+
   ],
 
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
     environment.production ? backendProvider : fakeBackendProvider,
   ],
   bootstrap: [AppComponent],
-  entryComponents: [DialogComponent, SnackbarComponent]
+  entryComponents: [
+    BalanceDialogComponent,
+    SnackbarComponent,
+    UserDialogComponent,
+  ]
 })
 export class AppModule { }

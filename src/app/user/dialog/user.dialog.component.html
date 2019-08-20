@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>
+    <ng-container *ngIf="event == 'edit'; else elseTemplate">
+        {{'button.edit' | translation}}
+    </ng-container>
+    <ng-template #elseTemplate>
+        {{'button.add' | translation}}
+    </ng-template>
+
+    <mat-icon class="close-dialog" (click)="onNoClick()">close</mat-icon>
+</h1>
+<div mat-dialog-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field>
+            <input matInput placeholder="Enter name" type="text" formControlName="username"
+                [ngClass]="{'is-invalid':submitted && f.username.errors }">
+            <mat-error *ngIf="submitted && f.username.errors">
+                <span *ngIf="f.username.errors.required">Field is required</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Enter new password" type="password" formControlName="password"
+                [ngClass]="{'is-invalid':submitted && f.password.errors }">
+            <mat-error *ngIf="submitted && f.password.errors">
+                <span *ngIf="f.password.errors?.minlengh||f.password.errors?.maxlength">Field length should be between 6
+                    and 20</span>
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Confirm new password" type="password" formControlName="passwordc"
+                [ngClass]="{'is-invalid':submitted && f.passwordc.errors }">
+            <mat-error *ngIf="submitted && f.password.errors">
+                <span *ngIf="f.passwordc.errors?.minlengh||f.passwordc.errors?.maxlength">Field length should be between
+                    6 and 20</span>
+            </mat-error>
+        </mat-form-field>
+        <br>
+        <br>
+        <mat-card-actions align="end">
+            <button mat-raised-button color="primary" [disabled]="loading" class="button login-button">
+                {{'button.submit' | translation}}
+            </button>
+        </mat-card-actions>
+
+        <mat-card-actions *ngIf="loading" align="start" class="login-loading">
+            <br>
+            <br>
+            <mat-spinner [diameter]="25" [style.display]="block"></mat-spinner>
+        </mat-card-actions>
+        <div *ngIf="loading == false && error">
+            <br>
+            <div class="fail-block">
+                <mat-error>{{error}}</mat-error>
+            </div>
+        </div>
+    </form>
+</div>

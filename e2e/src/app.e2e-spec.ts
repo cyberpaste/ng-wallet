@@ -39,10 +39,10 @@ describe('workspace-project App', () => {
 
 function login(page, constants) {
   page.navigateToRoute('/login');
-  let loginSelector = 'app .form-signin input[formcontrolname="username"]';
-  let passwordSelector = 'app .form-signin input[formcontrolname="password"]';
+  const loginSelector = 'app .form-signin input[formcontrolname="username"]';
+  const passwordSelector = 'app .form-signin input[formcontrolname="password"]';
   page.getElementBySelector(loginSelector).sendKeys(constants.getTestCredentials().login);
   page.getElementBySelector(passwordSelector).sendKeys(constants.getTestCredentials().password);
-  let loginButton = 'app .form-signin button';
+  const loginButton = 'app .form-signin button';
   page.getElementBySelector(loginButton).click();
 }

@@ -6,57 +6,6 @@ use App\Base\Controller;
 
 class ApiController extends Controller {
 
-
-    public function authenticate(){
-        $post = $this->container->get('request')->getParsedBody();
-        $data = [];
-
-        $em =  $this->container->get('db')->get('em')->getEntityManager();
-        $settings = $this->container->get('settings');
-        if(!($post['username'] ?? '') || !($post['password'] ?? '')){
-            return $this->container->get('response')->withJson(['message' => 'Username or password is incorrect'])->withStatus(400); 
-        }
-
-        $user = $em->getRepository('Users')->findOneBy(['name' => $post['username']]);
-
-        if($user && $user->getPassword()  == md5($post['password'])){
-            $token = bin2hex(random_bytes(64));
-            $tokenExpireDate = time() + $settings['auth']['tokenExpireDate'];
-            $user->setToken($token);
-            $user->setTokenexpiredate($tokenExpireDate);
-            $em->persist($user);
-            $em->flush();
-            $data['token'] = $token;
-            $data['tokenEpireDate'] = $tokenExpireDate;
-            $response  = $this->container->get('response')->withJson($data);
-        }else{
-            $response  = $this->container->get('response')->withJson(['message' => 'Username or password is incorrect'])->withStatus(400);
-        }
-        return $response;
-    }
-
-    public function logout(){
-        $em =  $this->container->get('db')->get('em')->getEntityManager();
-        $headers = $this->container->get('request')->getHeader('Authorization');
-        $token = '';
-        foreach($headers as $item){
-            if(preg_match('/Bearer/', $item)){
-                $token = explode(' ', $item)[1] ?? '';		
-                $token = substr(preg_replace('/[^A-Za-z0-9]/', '', $token),0,128);
-            }
-        }
-        $data = [];
-        if($token){
-         $user = $em->getRepository('Users')->findOneBy(['token' => $token]);
-         $user->setToken(null);
-         $user->setTokenexpiredate(null);
-         $em->persist($user);
-         $em->flush();
-        }
-        $response = $this->container->get('response')->withJson($data);
-        return $response;
-    }
-
     public function balanceGet(){
         $em =  $this->container->get('db')->get('em')->getEntityManager();
         $balance = $em

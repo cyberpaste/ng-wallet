@@ -10,4 +10,20 @@ export class UserService {
     getAll() {
         return this.http.get<User[]>(`${environment.apiUrl}/users`);
     }
+
+    add(user) {
+        return this.http.put<User[]>(`${environment.apiUrl}/users`, user);
+    }
+
+    deleteAll() {
+        return this.http.get<User[]>(`${environment.apiUrl}/users/clear`);
+    }
+
+    delete(user) {
+        return this.http.delete<User[]>(`${environment.apiUrl}/users/` + user.id);
+    }
+
+    edit(user) {
+        return this.http.put<User[]>(`${environment.apiUrl}/users/` + user.id, user);
+    }
 }

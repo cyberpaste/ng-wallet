@@ -35,10 +35,12 @@ export class AuthenticationService {
 
 
     logout() {
-        this.http.get<any>(`${environment.apiUrl}/users/logout`).pipe().subscribe(data => {
+       return this.http.get<any>(`${environment.apiUrl}/users/logout`).pipe(map(
+            () => {
+                localStorage.removeItem('currentUser');
+                this.currentUserSubject.next(null);
+            }
+        ));
 
-        });
-        localStorage.removeItem('currentUser');
-        this.currentUserSubject.next(null);
     }
 }

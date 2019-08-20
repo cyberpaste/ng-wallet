@@ -2,7 +2,8 @@
 
 use Slim\App;
 use App\Controllers\{
-    ApiController
+    ApiController,
+    UsersController,
 };
 
 class Auth
@@ -48,14 +49,23 @@ class Auth
 return function (App $app) {
     
     $app->group('/users', function () use ($app) {
-        $app->post('/authenticate', ApiController::class . ':authenticate');
-        $app->get('/logout', ApiController::class . ':logout');
+        $app->post('/authenticate', UsersController::class . ':authenticate');
+        $app->get('/logout', UsersController::class . ':logout');
     });
-    $app->get('/balance', ApiController::class . ':balanceGet')->add('Auth');
-    $app->put('/balance', ApiController::class . ':balanceAdd')->add('Auth');
-    $app->delete('/balance/{id}', ApiController::class . ':balanceDelete')->add('Auth');
-    $app->put('/balance/{id}', ApiController::class . ':balanceEdit')->add('Auth');
+
+    $app->group('/users', function () use ($app) {
+        $app->get('', UsersController::class . ':usersGet');
+        $app->put('', UsersController::class . ':userAdd');
+        $app->delete('/{id}', UsersController::class . ':userDelete');
+        $app->put('/{id}', UsersController::class . ':userEdit');
+        $app->get('/clear', UsersController::class . ':usersClear');
+    })->add('Auth');
+
     $app->group('/balance', function () use ($app) {
+        $app->get('', ApiController::class . ':balanceGet');
+        $app->put('', ApiController::class . ':balanceAdd');
+        $app->delete('/{id}', ApiController::class . ':balanceDelete');
+        $app->put('/{id}', ApiController::class . ':balanceEdit');
         $app->get('/clear', ApiController::class . ':balanceClear');
     })->add('Auth');
     $app->get('/test/{id}', ApiController::class . ':test');

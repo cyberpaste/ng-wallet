@@ -1,0 +1,21 @@
+.balance-loader{
+    display:inline-block !important;
+}
+
+table{
+    width: 100%;
+}
+
+tr td:last-child{
+    width:1%;
+    white-space:nowrap;
+}
+
+.operation-button{
+    border-radius: 0;
+    width: 25px;
+}
+
+.balance-icon{
+    font-size: 20px;
+}

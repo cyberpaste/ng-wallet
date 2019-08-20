@@ -31,7 +31,7 @@ describe('AppComponent', () => {
       appComponent = fixture.debugElement.componentInstance;
       fixture.detectChanges();
       dom = fixture.debugElement.nativeElement;
-    });;
+    });
   }));
 
   it('should create the app', () => {
