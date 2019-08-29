@@ -7,8 +7,7 @@ Features :
 2) Balance debit/credit operations
 3) Users crud operations
 
-![preview](preview.jpg)
-![preview](preview2.jpg)
+![preview](preview.jpg) ![preview](preview2.jpg)
 
 ## Installation
 
