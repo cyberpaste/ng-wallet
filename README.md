@@ -7,8 +7,8 @@ Features :
 2) Balance debit/credit operations
 3) Users crud operations
 
-![preview](https://raw.githubusercontent.com/cyberpaste/ng-wallet/master/preview.jpg)
-![preview](https://raw.githubusercontent.com/cyberpaste/ng-wallet/master/preview2.jpg)
+![preview](preview.jpg)
+![preview](preview2.jpg)
 
 ## Installation
 
