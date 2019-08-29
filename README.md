@@ -5,6 +5,7 @@ Personal wallet app. It will help managing funds.
 Features :
 1) Authentification
 2) Balance debit/credit operations
+3) Users crud operations
 
 ## Installation
 
